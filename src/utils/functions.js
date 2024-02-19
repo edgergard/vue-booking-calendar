@@ -8,8 +8,19 @@ export function getDates(offset = 0) {
   for (let i = 0; i < 7; i++) {
     const date = new Date(startOfWeek);
     date.setDate(date.getDate() + i);
-    dates.push(date.toLocaleDateString());
+    const formattedDate = date.toISOString().split('T')[0];
+    dates.push(formattedDate);
   }
 
   return dates;
+}
+
+export function getWeeklyBookings(data, dates) {
+  return data.filter(booking =>
+    booking.duration !== 0
+    && (dates.includes(booking.start) || dates.includes(booking.end)));
+}
+
+export function getRoomBookings(bookings, roomName) {
+  return bookings.filter(booking => booking.roomDetails.name === roomName);
 }
